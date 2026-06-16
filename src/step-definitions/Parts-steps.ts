@@ -20,17 +20,19 @@ Given('User is logged into Techline application', async function () {
 
 Given('User navigates to Library', async function () {
   partsPage = new PartsPage(this.page);
-
   await this.page.getByRole('button', { name: 'Library' }).click();
+  console.log('Navigated to Library');
 });
 
 When('User clicks on Parts link', async function () {
   await this.page.getByRole('main').getByRole('button', { name: 'Parts' }).click();
+  console.log('Clicked on Parts link');
 });
 
 Then('Parts listing page should be displayed', async function () {
   await expect(this.page.getByRole('button', { name: 'Create' })).toBeVisible();
   page1Promise = this.page.waitForEvent('popup');
+  console.log('Waiting for popup');
 });
 
 When('User click the Create button', async function () {
@@ -41,24 +43,29 @@ When('User click the Create button', async function () {
   page1 = await popupPromise;
 
   partsPage = new PartsPage(page1);
+  console.log('Create button clicked, popup opened');
 });
 
 Then('Add Parts page should be displayed', async function () {
   // await expect(partsPage.addPartsHeader).toBeVisible();
   await page1.waitForLoadState();
+  console.log('Add Parts page displayed');
 });
 
 When('User enters part details', async function () {
   await partsPage.enterPartDetails(partData);
+  console.log('Part details entered');
 });
 
 When('User click the Save Draft button', async function () {
   await page1.getByRole('button', { name: 'Save Draft' }).click();
+  console.log('Save Draft button clicked');
 });
 
 Then('Part should be saved successfully', async function () {
   await page1.locator('.relative > div:nth-child(3)').first().click();
   await this.page.waitForTimeout(3000);
+  console.log('Waiting for success message');
 
   // Replace with actual success toast
   await expect(
