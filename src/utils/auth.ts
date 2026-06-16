@@ -11,8 +11,6 @@ async function saveAuth() {
   await page.context().storageState({
     path: 'auth.json'
   });
-
+  
   await browser.close();
-
-
 saveAuth();
