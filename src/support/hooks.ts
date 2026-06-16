@@ -13,7 +13,7 @@ Before(async function () {
   });
 
   this.page = await this.context.newPage();
-  // await this.page.goto('https://stage-techline.tamilzorous.com/');
+  await this.page.goto('https://stage-techline.tamilzorous.com/');
 });
 
 After(async function () {

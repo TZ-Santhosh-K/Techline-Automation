@@ -8,5 +8,8 @@
     "@playwright/test": "^1.53.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.4.0"
   }
 }
