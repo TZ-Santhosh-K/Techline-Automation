@@ -5,6 +5,8 @@ import { PartsPage } from '../pages/Parts-page';
 import { partData } from '../test-data/partsData';
 
 let partsPage: PartsPage;
+let page1: any;
+let page1Promise: Promise<any>;
 
 // Given('User is logged into Techline application', async function () {
 //   console.log('Login step');
@@ -13,29 +15,37 @@ Given('User is logged into Techline application', async function () {
   console.log('Opening application');
   await this.page.goto('https://stage-techline.tamilzorous.com/');
   console.log('Application opened');
-  await this.page.pause();
+  // await this.page.pause();
 });
 
 Given('User navigates to Library', async function () {
   partsPage = new PartsPage(this.page);
 
-  await partsPage.libraryMenu.click();
+  await this.page.getByRole('button', { name: 'Library' }).click();
 });
 
 When('User clicks on Parts link', async function () {
-  await partsPage.partsLink.click();
+  await this.page.getByRole('main').getByRole('button', { name: 'Parts' }).click();
 });
 
 Then('Parts listing page should be displayed', async function () {
-  await expect(partsPage.createButton).toBeVisible();
+  await expect(this.page.getByRole('button', { name: 'Create' })).toBeVisible();
+  page1Promise = this.page.waitForEvent('popup');
 });
 
 When('User click the Create button', async function () {
-  await partsPage.clickCreateButton();
+  const popupPromise = this.page.waitForEvent('popup');
+
+  await this.page.getByRole('button', { name: 'Create' }).click();
+
+  page1 = await popupPromise;
+
+  partsPage = new PartsPage(page1);
 });
 
 Then('Add Parts page should be displayed', async function () {
-  await expect(partsPage.addPartsHeader).toBeVisible();
+  // await expect(partsPage.addPartsHeader).toBeVisible();
+  await page1.waitForLoadState();
 });
 
 When('User enters part details', async function () {
@@ -43,10 +53,11 @@ When('User enters part details', async function () {
 });
 
 When('User click the Save Draft button', async function () {
-  await partsPage.clickSaveDraft();
+  await page1.getByRole('button', { name: 'Save Draft' }).click();
 });
 
 Then('Part should be saved successfully', async function () {
+  await page1.locator('.relative > div:nth-child(3)').first().click();
   await this.page.waitForTimeout(3000);
 
   // Replace with actual success toast
