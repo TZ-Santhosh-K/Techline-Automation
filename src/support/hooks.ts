@@ -13,11 +13,34 @@ Before(async function () {
   });
 
   this.page = await this.context.newPage();
-  await this.page.goto('https://stage-techline.tamilzorous.com/');
+  
+  // Set a viewport for consistency
+  await this.page.setViewportSize({ width: 1280, height: 720 });
+  
+  await this.page.goto('https://stage-techline.tamilzorous.com/', { waitUntil: 'networkidle' });
+  
+  console.log(
+    'Token:',
+    await this.page.evaluate(() => localStorage.getItem('token'))
+  );
+  
+console.log(
+  'User:',
+  await this.page.evaluate(() => localStorage.getItem('user'))
+);
+
+  console.log('URL:', await this.page.url());
 });
 
 After(async function () {
   if (this.browser) {
+    this.page.on('close', () => {
+   console.log('PAGE CLOSED');
+});
+
+this.browser.on('disconnected', () => {
+   console.log('BROWSER CLOSED');
+});
     await this.browser.close();
   }
 });
