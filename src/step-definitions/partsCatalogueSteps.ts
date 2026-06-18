@@ -1,5 +1,5 @@
 import { Given, When, Then } from '@cucumber/cucumber';
-import { PartsCataloguePage } from '../pages/Partscataloguepage';
+import { PartsCataloguePage } from '../pages/PartsCataloguePage';
 import partsCatalogueData from '../test-data/partsCatalogueData.json';
 
 let partsCataloguePage: PartsCataloguePage;
@@ -21,8 +21,23 @@ When('User click the Search button', async function () {
 });
 
 Then('Search results should be displayed', async function () {
+  await this.page.locator('tbody tr').first().waitFor({
+    state: 'visible',
+    timeout: 300000
+  });
   await this.page.screenshot({
     path: `screenshots/search-result-${Date.now()}.png`,
     fullPage: true
   });
+});
+
+Then('Search button should remain disabled', async function () {
+
+  await partsCataloguePage.verifySearchButtonDisabled();
+
+  await this.page.screenshot({
+    path: `screenshots/empty-search-${Date.now()}.png`,
+    fullPage: true
+  });
+
 });
