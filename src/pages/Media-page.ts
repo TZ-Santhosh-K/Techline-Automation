@@ -79,37 +79,30 @@ this.saveButton = page.getByRole('button', {
   await this.page.getByText(data.tag, {
     exact: true
   }).click();
+console.log("Tag selected");
 
-  // Outside click to close tag dropdown
-  await this.page.locator('body').click({
-    position: {
-      x: 10,
-      y: 10
-    }
-  });
+await this.page.waitForTimeout(3000);
 
-  await this.page.waitForTimeout(500);
+const urlInput = this.page.locator('input[placeholder="Enter URL"]');
 
-  console.log("Tag selected");
+console.log(
+  "URL count:",
+  await urlInput.count()
+);
 
-  // URL
-  await this.urlInput.fill(data.url);
+await urlInput.waitFor({
+  state: 'visible',
+  timeout: 10000
+});
 
-  console.log("URL entered");
+await urlInput.scrollIntoViewIfNeeded();
 
-  // File Upload
-  await this.fileInput.setInputFiles(
-    './src/test-data/sample.pdf'
-  );
+await urlInput.fill(data.url);
 
-  console.log("File uploaded");
-}
+console.log("URL entered");
 
-async clickSave() {
-  await this.saveButton.waitFor({
-    state: 'visible'
-  });
+// File Upload
+await this.fileInput.setInputFiles('./src/test-data/sample.pdf');
 
-  await this.saveButton.click();
-}
-}
+console.log("File uploaded");
+  }}
