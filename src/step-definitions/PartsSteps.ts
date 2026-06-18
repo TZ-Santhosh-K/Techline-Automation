@@ -1,6 +1,6 @@
 import { Given, When, Then,setDefaultTimeout } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
-import { PartsPage } from '../pages/Parts-page';
+import { PartsPage } from '../pages/PartsPage';
 import { partData } from '../test-data/partsData';
 
 setDefaultTimeout(60000); // Set default timeout to 60 seconds

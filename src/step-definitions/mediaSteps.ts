@@ -4,7 +4,7 @@
     Then
   } from '@cucumber/cucumber';
   import { expect } from '@playwright/test';
-  import { MediaPage } from '../pages/Media-page';
+  import { MediaPage } from '../pages/MediaPage';
   import { mediaData } from '../test-data/mediaData';
 
   let mediaPage: MediaPage;
