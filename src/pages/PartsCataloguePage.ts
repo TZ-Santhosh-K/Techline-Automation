@@ -10,17 +10,29 @@ export class PartsCataloguePage {
   }
 
    async clickSearchButton() {
-    await this.page.locator('button:has-text("Search")').click();
 
-    // Search results varum varaikum wait
-    await this.page.locator('tbody tr').first().waitFor({
-      state: 'visible',
-      timeout: 150000
-    });
+  await this.page.locator('button:has-text("Search")').click();
 
-    // Loading parts innum visible-a irundha fail
+  try {
+
     await expect(
       this.page.getByText('Loading parts...')
-    ).not.toBeVisible();
+    ).not.toBeVisible({ timeout: 300000 });
+
+    await this.page.locator('tbody tr').first().waitFor({
+      state: 'visible',
+      timeout: 10000
+    });
+
+  } catch (error) {
+
+    // Fail screenshot
+    await this.page.screenshot({
+      path: `screenshots/parts-catalogue-failed-${Date.now()}.png`,
+      fullPage: true
+    });
+
+    throw error;
   }
+}
 }
